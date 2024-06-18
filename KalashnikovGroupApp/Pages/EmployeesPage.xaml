@@ -24,8 +24,8 @@
                     <GradientStop Color="White" Offset="1"/>
                 </LinearGradientBrush>
             </StackPanel.Background>
-            <StackPanel Height="308">
-                <Button Height="50" Width="50" Background="Transparent" Margin="0,20,0,0" Click="EmployeesClick">
+            <StackPanel Height="250">
+                <Button Height="50" Width="50" Background="Transparent" Margin="0,15,0,0" Click="EmployeesClick">
                     <Image Source="/Images/employees.png"/>
                     <Button.ToolTip>
                         <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
@@ -33,7 +33,7 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
-                <Button Height="50" Width="50" Background="Transparent" Margin="0,20,0,0" Click="ComponentsClick">
+                <Button Height="50" Width="50" Background="Transparent" Margin="0,10,0,0" Click="ComponentsClick">
                     <Image Source="/Images/components.png"/>
                     <Button.ToolTip>
                         <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
@@ -41,7 +41,7 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
-                <Button Height="50" Width="50" Background="Transparent" Margin="0,20,0,0" Click="DealClick">
+                <Button Height="50" Width="50" Background="Transparent" Margin="0,10,0,0" Click="DealClick">
                     <Image Source="/Images/deal.png"/>
                     <Button.ToolTip>
                         <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
@@ -49,11 +49,29 @@
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
-                <Button Height="50" Width="50" Background="Transparent" Margin="0,20,0,0" Click="PaydayClick">
+                <Button Height="50" Width="50" Background="Transparent" Margin="0,10,0,0" Click="PaydayClick">
                     <Image Source="/Images/payday.png"/>
                     <Button.ToolTip>
                         <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
                             ㅤㅤЗаработная платаㅤㅤ
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+            </StackPanel>
+            <StackPanel Height="153">
+                <Button Height="50" Width="50" Background="Transparent" Margin="0,20,0,0" Click="ExcelClick">
+                    <Image Source="/Images/excel.png"/>
+                    <Button.ToolTip>
+                        <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
+                            ㅤㅤЭкспорт в Excelㅤ
+                        </ToolTip>
+                    </Button.ToolTip>
+                </Button>
+                <Button Height="50" Width="50" Background="Transparent" Margin="0,20,0,0" Click="PDFClick">
+                    <Image Source="/Images/pdf.png"/>
+                    <Button.ToolTip>
+                        <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
+                            ㅤㅤЭкспорт в PDFㅤ
                         </ToolTip>
                     </Button.ToolTip>
                 </Button>
@@ -65,12 +83,11 @@
                     <GridView>
                         <GridViewColumn Header="ID" DisplayMemberBinding="{Binding id_employess}" Width="40"/>
                         <GridViewColumn Header="Mail" DisplayMemberBinding="{Binding mail}" Width="80"/>
-                        <GridViewColumn Header="Password" DisplayMemberBinding="{Binding password}" Width="80"/>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding name}" Width="80"/>
-                        <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding surname}" Width="120"/>
-                        <GridViewColumn Header="Middlename" DisplayMemberBinding="{Binding middlename}" Width="100"/>
-                        <GridViewColumn Header="Wage rate" DisplayMemberBinding="{Binding wage_rate}" Width="100"/>
-                        <GridViewColumn Header="Post" DisplayMemberBinding="{Binding Postid_post}" Width="100"/>
+                        <GridViewColumn Header="Password" DisplayMemberBinding="{Binding password}" Width="110"/>
+                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding name}" Width="100"/>
+                        <GridViewColumn Header="Surname" DisplayMemberBinding="{Binding surname}" Width="140"/>
+                        <GridViewColumn Header="Middlename" DisplayMemberBinding="{Binding middlename}" Width="120"/>
+                        <GridViewColumn Header="Wage rate" DisplayMemberBinding="{Binding wage_rate}" Width="120"/>
                     </GridView>
                 </ListView.View>
             </ListView>
@@ -109,13 +126,21 @@
                     </Button>
                 </StackPanel>
                 <StackPanel Width="362" Margin="0,-83,0,0" HorizontalAlignment="Right" Height="83">
-                    <TextBox x:Name="TbSerch" Height="30" FontSize="20" Width="120" BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Left" Margin="20,25,0,0" TextChanged="TbSerch_TextChanged">
+                    <TextBox Name="TbSerch" Height="30" FontSize="20" Width="120" BorderThickness="2" BorderBrush="Black" HorizontalAlignment="Left" Margin="40,25,0,0" TextChanged="TbSerch_TextChanged">
                         <TextBox.ToolTip>
                             <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
                                 ㅤПоискㅤ
                             </ToolTip>
                         </TextBox.ToolTip>
                     </TextBox>
+                    <Button Height="50" Width="50" Background="Transparent" Margin="245,-40,0,0" HorizontalAlignment="Left" Click="SearchClick">
+                        <Image Source="/Images/search.png"/>
+                        <Button.ToolTip>
+                            <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
+                                ㅤㅤИскатьㅤㅤ
+                            </ToolTip>
+                        </Button.ToolTip>
+                    </Button>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

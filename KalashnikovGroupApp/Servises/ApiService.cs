@@ -28,6 +28,12 @@ namespace KalashnikovGroupApp.Servises
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<List<Employees>>();
         }
+        internal async Task<List<Post>> GetPostCollection()
+        {
+            var response = await _httpClient.GetAsync("api/Post");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<List<Post>>();
+        }
 
         internal async Task CreateEmployees(Employees employees)
         {
