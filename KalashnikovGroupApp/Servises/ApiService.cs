@@ -34,10 +34,21 @@ namespace KalashnikovGroupApp.Servises
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<List<Post>>();
         }
+        internal async Task<List<Components>> GetComponents()
+        {
+            var response = await _httpClient.GetAsync("api/Components");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<List<Components>>();
+        }
 
         internal async Task CreateEmployees(Employees employees)
         {
             var response = await _httpClient.PostAsJsonAsync($"api/Employees/POST?id_post={employees.Postid_post}", employees);
+            response.EnsureSuccessStatusCode();
+        }
+        internal async Task CreateComponents(Components сomponents)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Components/POST", сomponents);
             response.EnsureSuccessStatusCode();
         }
 
@@ -46,10 +57,20 @@ namespace KalashnikovGroupApp.Servises
             var response = await _httpClient.PutAsJsonAsync($"api/Employees/PUT/{employees.id_employess}", employees);
             response.EnsureSuccessStatusCode();
         }
+        internal async Task UpdateComponents(Components сomponents)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/Components/PUT/{сomponents.id_components}", сomponents);
+            response.EnsureSuccessStatusCode();
+        }
 
         internal async Task DeleteEmployees(int id_employees)
         {
             var response = await _httpClient.DeleteAsync($"api/Employees/DELETE/{id_employees}");
+            response.EnsureSuccessStatusCode();
+        }
+        internal async Task DeleteСomponents(int id_components)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Components/DELETE/{id_components}");
             response.EnsureSuccessStatusCode();
         }
         internal async Task<List<Post>> GetPost()

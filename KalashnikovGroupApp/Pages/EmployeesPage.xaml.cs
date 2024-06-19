@@ -9,7 +9,6 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -17,7 +16,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using KalashnikovGroupApp.Models;
-using KalashnikovGroupApp.Servises;
 using Excel = Microsoft.Office.Interop.Excel;
 using Word = Microsoft.Office.Interop.Word;
 
@@ -68,7 +66,7 @@ namespace KalashnikovGroupApp.Pages
 
         private void ComponentsClick(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new ComponentsPage());
         }
 
         private async void DeleteClick(object sender, RoutedEventArgs e)
