@@ -40,7 +40,12 @@ namespace KalashnikovGroupApp.Servises
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<List<Components>>();
         }
-
+        internal async Task<List<Deal>> GetDeal()
+        {
+            var response = await _httpClient.GetAsync("api/Deal");
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadFromJsonAsync<List<Deal>>();
+        }
         internal async Task CreateEmployees(Employees employees)
         {
             var response = await _httpClient.PostAsJsonAsync($"api/Employees/POST?id_post={employees.Postid_post}", employees);
@@ -49,6 +54,11 @@ namespace KalashnikovGroupApp.Servises
         internal async Task CreateComponents(Components сomponents)
         {
             var response = await _httpClient.PostAsJsonAsync($"api/Components/POST", сomponents);
+            response.EnsureSuccessStatusCode();
+        }
+        internal async Task CreateDeal(Deal deal)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Deal/POST", deal);
             response.EnsureSuccessStatusCode();
         }
 
@@ -62,6 +72,11 @@ namespace KalashnikovGroupApp.Servises
             var response = await _httpClient.PutAsJsonAsync($"api/Components/PUT/{сomponents.id_components}", сomponents);
             response.EnsureSuccessStatusCode();
         }
+        internal async Task UpdateDeal(Deal deal)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/Deal/PUT/{deal.id_deal}", deal);
+            response.EnsureSuccessStatusCode();
+        }
 
         internal async Task DeleteEmployees(int id_employees)
         {
@@ -71,6 +86,11 @@ namespace KalashnikovGroupApp.Servises
         internal async Task DeleteСomponents(int id_components)
         {
             var response = await _httpClient.DeleteAsync($"api/Components/DELETE/{id_components}");
+            response.EnsureSuccessStatusCode();
+        }
+        internal async Task DeleteDeal(int id_deal)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Deal/DELETE/{id_deal}");
             response.EnsureSuccessStatusCode();
         }
         internal async Task<List<Post>> GetPost()

@@ -99,12 +99,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\Components.cs" />
+    <Compile Include="Models\Deal.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Pages\ComponentsPage.xaml.cs">
       <DependentUpon>ComponentsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\ComponentsPageAdd.xaml.cs">
       <DependentUpon>ComponentsPageAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DealPage.xaml.cs">
+      <DependentUpon>DealPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\DealPageAdd.xaml.cs">
+      <DependentUpon>DealPageAdd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Pages\EmployeesPage.xaml.cs">
       <DependentUpon>EmployeesPage.xaml</DependentUpon>
@@ -130,6 +137,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\ComponentsPageAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DealPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\DealPageAdd.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -22,25 +20,25 @@ using Word = Microsoft.Office.Interop.Word;
 namespace KalashnikovGroupApp.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ComponentsPage.xaml
+    /// Логика взаимодействия для DealPage.xaml
     /// </summary>
-    public partial class ComponentsPage : Page
+    public partial class DealPage : Page
     {
         private readonly ApiService _apiService;
 
-        private List<Components> _allComponents;
-        public ComponentsPage()
+        private List<Deal> _allDeal;
+        public DealPage()
         {
             InitializeComponent();
             _apiService = new ApiService();
-            LoadComponents();
+            LoadDeal();
         }
-        private async Task LoadComponents()
+        private async Task LoadDeal()
         {
             try
             {
-                _allComponents = await _apiService.GetComponents();
-                ComponentsListView.ItemsSource = _allComponents;
+                _allDeal = await _apiService.GetDeal();
+                DealListView.ItemsSource = _allDeal;
             }
             catch (Exception ex)
             {
@@ -55,12 +53,12 @@ namespace KalashnikovGroupApp.Pages
 
         private void ComponentsClick(object sender, RoutedEventArgs e)
         {
-            
+            NavigationService.Navigate(new ComponentsPage());
         }
 
         private void DealClick(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new DealPage());
+
         }
 
         private void PaydayClick(object sender, RoutedEventArgs e)
@@ -78,19 +76,23 @@ namespace KalashnikovGroupApp.Pages
 
             int indexRows = 1;
 
-            worksheet.Cells[2][indexRows] = "Наименование";
+            worksheet.Cells[2][indexRows] = "Дата";
+            worksheet.Cells[3][indexRows] = "Количество";
+            worksheet.Cells[4][indexRows] = "Сумма";
 
-            var printItems = ComponentsListView.Items;
+            var printItems = DealListView.Items;
 
-            foreach (Components item in printItems)
+            foreach (Deal item in printItems)
             {
                 worksheet.Cells[1][indexRows + 1] = indexRows;
-                worksheet.Cells[2][indexRows + 1] = item.denomination;
+                worksheet.Cells[2][indexRows + 1] = item.date;
+                worksheet.Cells[3][indexRows + 1] = item.quality;
+                worksheet.Cells[4][indexRows + 1] = item.total_amount;
 
                 indexRows++;
             }
             Excel.Range range = worksheet.Range[worksheet.Cells[2][indexRows + 1],
-                    worksheet.Cells[2][indexRows + 1]];
+                    worksheet.Cells[4][indexRows + 1]];
 
             range.ColumnWidth = 20;
 
@@ -101,16 +103,16 @@ namespace KalashnikovGroupApp.Pages
 
         private async void PDFClick(object sender, RoutedEventArgs e)
         {
-            _allComponents = await _apiService.GetComponents();
-            var ComponentsInPDF = _allComponents;
+            _allDeal = await _apiService.GetDeal();
+            var DealInPDF = _allDeal;
 
-            var ComponentsApplicationPDF = new Word.Application();
+            var DealApplicationPDF = new Word.Application();
 
-            Word.Document document = ComponentsApplicationPDF.Documents.Add();
+            Word.Document document = DealApplicationPDF.Documents.Add();
 
             Word.Paragraph empParagraph = document.Paragraphs.Add();
             Word.Range empRange = empParagraph.Range;
-            empRange.Text = "Components";
+            empRange.Text = "Deal";
             empRange.Font.Bold = 4;
             empRange.Font.Italic = 4;
             empRange.Font.Color = Word.WdColor.wdColorBlack;
@@ -118,89 +120,97 @@ namespace KalashnikovGroupApp.Pages
 
             Word.Paragraph tableParagraph = document.Paragraphs.Add();
             Word.Range tableRange = tableParagraph.Range;
-            Word.Table paymentsTable = document.Tables.Add(tableRange, ComponentsInPDF.Count() + 1, 1);
+            Word.Table paymentsTable = document.Tables.Add(tableRange, DealInPDF.Count() + 1, 3);
             paymentsTable.Borders.InsideLineStyle = paymentsTable.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
             paymentsTable.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
             Word.Range cellRange;
 
             cellRange = paymentsTable.Cell(1, 1).Range;
-            cellRange.Text = "Наименование";
+            cellRange.Text = "Дата";
+            cellRange = paymentsTable.Cell(1, 2).Range;
+            cellRange.Text = "Количество";
+            cellRange = paymentsTable.Cell(1, 3).Range;
+            cellRange.Text = "Сумма";
 
 
             paymentsTable.Rows[1].Range.Bold = 1;
             paymentsTable.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
 
-            for (int i = 0; i < ComponentsInPDF.Count(); i++)
+            for (int i = 0; i < DealInPDF.Count(); i++)
             {
-                var ProductCurrent = ComponentsInPDF[i];
+                var ProductCurrent = DealInPDF[i];
 
                 cellRange = paymentsTable.Cell(i + 2, 1).Range;
-                cellRange.Text = ProductCurrent.denomination;
+                cellRange.Text = ProductCurrent.date.ToString();
+
+                cellRange = paymentsTable.Cell(i + 2, 2).Range;
+                cellRange.Text = ProductCurrent.quality.ToString();
+
+                cellRange = paymentsTable.Cell(i + 2, 3).Range;
+                cellRange.Text = ProductCurrent.total_amount.ToString();
             }
 
-            ComponentsApplicationPDF.Visible = true;
+            DealApplicationPDF.Visible = true;
 
-            document.SaveAs2(@"C:\Users\User\OneDrive\Desktop\KalashnikovGroupApp\KalashnikovGroupApp\Files\Components.pdf", Word.WdExportFormat.wdExportFormatPDF);
+            document.SaveAs2(@"C:\Users\User\OneDrive\Desktop\KalashnikovGroupApp\KalashnikovGroupApp\Files\Deal.pdf", Word.WdExportFormat.wdExportFormatPDF);
         }
 
         private void AddClick(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new ComponentsPageAdd());
+            NavigationService.Navigate(new DealPageAdd());
         }
 
         private void UpdateClick(object sender, RoutedEventArgs e)
         {
-            if (ComponentsListView.SelectedItem is Components selectedComponents)
+            if (DealListView.SelectedItem is Deal selectedDeal)
             {
-                NavigationService.Navigate(new ComponentsPageAdd(selectedComponents));
+                NavigationService.Navigate(new DealPageAdd(selectedDeal));
             }
             else
             {
-                MessageBox.Show("Выберите компонент для редактирования");
+                MessageBox.Show("Выберите дело для редактирования");
             }
         }
 
         private async void DeleteClick(object sender, RoutedEventArgs e)
         {
-            if (ComponentsListView.SelectedItem is Components selectedComponents)
+            if (DealListView.SelectedItem is Deal selectedDeal)
             {
-                var result = MessageBox.Show($"Вы уверены, что хотите удалить компонент {selectedComponents.denomination}?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                var result = MessageBox.Show($"Вы уверены, что хотите удалить дело от {selectedDeal.date}?", "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        await _apiService.DeleteСomponents(selectedComponents.id_components);
-                        MessageBox.Show("Компонент успешно удален.");
-                        await LoadComponents();
+                        await _apiService.DeleteDeal(selectedDeal.id_deal);
+                        MessageBox.Show("Дело успешно удален.");
+                        await LoadDeal();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ошибка при удалении компонент: {ex.Message}");
+                        MessageBox.Show($"Ошибка при удалении дела: {ex.Message}");
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Выберите компонент для удаления.");
+                MessageBox.Show("Выберите дело для удаления.");
             }
-        }
-
-        private void SearchClick(object sender, RoutedEventArgs e)
-        {
-            var filteredComponents = _allComponents.AsEnumerable();
-
-            if (!string.IsNullOrWhiteSpace(TbSerch.Text))
-            {
-                var filterText = TbSerch.Text.ToLowerInvariant();
-                filteredComponents = filteredComponents.Where(p => p.denomination.ToLowerInvariant().Contains(filterText));
-            }
-            ComponentsListView.ItemsSource = filteredComponents.ToList();
         }
 
         private void TbSerch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void SearchClick(object sender, RoutedEventArgs e)
+        {
+            var filteredDeal = _allDeal.AsEnumerable();
+            if (int.TryParse(TbSerch.Text, out var minQuality))
+            {
+                filteredDeal = filteredDeal.Where(p => p.quality >= minQuality);
+            }
+            DealListView.ItemsSource = filteredDeal.ToList();
         }
     }
 }

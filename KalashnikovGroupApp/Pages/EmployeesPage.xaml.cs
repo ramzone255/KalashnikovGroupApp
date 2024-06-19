@@ -61,7 +61,7 @@ namespace KalashnikovGroupApp.Pages
 
         private void DealClick(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new DealPage());
         }
 
         private void ComponentsClick(object sender, RoutedEventArgs e)
