@@ -28,11 +28,11 @@ namespace KalashnikovGroupApp.Servises
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<List<Employees>>();
         }
-        internal async Task<List<Post>> GetPostCollection()
+        internal async Task<List<Payday>> GetPaydayCollection()
         {
-            var response = await _httpClient.GetAsync("api/Post");
+            var response = await _httpClient.GetAsync("api/Payday");
             response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<Post>>();
+            return await response.Content.ReadFromJsonAsync<List<Payday>>();
         }
         internal async Task<List<Components>> GetComponents()
         {
@@ -51,6 +51,11 @@ namespace KalashnikovGroupApp.Servises
             var response = await _httpClient.PostAsJsonAsync($"api/Employees/POST?id_post={employees.Postid_post}", employees);
             response.EnsureSuccessStatusCode();
         }
+        internal async Task CreatePayday(Payday payday)
+        {
+            var response = await _httpClient.PostAsJsonAsync($"api/Payday/POST", payday);
+            response.EnsureSuccessStatusCode();
+        }
         internal async Task CreateComponents(Components сomponents)
         {
             var response = await _httpClient.PostAsJsonAsync($"api/Components/POST", сomponents);
@@ -65,6 +70,11 @@ namespace KalashnikovGroupApp.Servises
         internal async Task UpdateEmployees(Employees employees)
         {
             var response = await _httpClient.PutAsJsonAsync($"api/Employees/PUT/{employees.id_employess}", employees);
+            response.EnsureSuccessStatusCode();
+        }
+        internal async Task UpdatePayday(Payday payday)
+        {
+            var response = await _httpClient.PutAsJsonAsync($"api/Payday/PUT/{payday.id_payday}", payday);
             response.EnsureSuccessStatusCode();
         }
         internal async Task UpdateComponents(Components сomponents)
@@ -83,6 +93,11 @@ namespace KalashnikovGroupApp.Servises
             var response = await _httpClient.DeleteAsync($"api/Employees/DELETE/{id_employees}");
             response.EnsureSuccessStatusCode();
         }
+        internal async Task DeletePayday(int id_payday)
+        {
+            var response = await _httpClient.DeleteAsync($"api/Payday/DELETE/{id_payday}");
+            response.EnsureSuccessStatusCode();
+        }
         internal async Task DeleteСomponents(int id_components)
         {
             var response = await _httpClient.DeleteAsync($"api/Components/DELETE/{id_components}");
@@ -92,12 +107,6 @@ namespace KalashnikovGroupApp.Servises
         {
             var response = await _httpClient.DeleteAsync($"api/Deal/DELETE/{id_deal}");
             response.EnsureSuccessStatusCode();
-        }
-        internal async Task<List<Post>> GetPost()
-        {
-            var response = await _httpClient.GetAsync("api/Post");
-            response.EnsureSuccessStatusCode();
-            return await response.Content.ReadFromJsonAsync<List<Post>>();
         }
 
         // Другие методы для взаимодействия с API

@@ -8,8 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -22,25 +20,25 @@ using Word = Microsoft.Office.Interop.Word;
 namespace KalashnikovGroupApp.Pages
 {
     /// <summary>
-    /// Логика взаимодействия для ComponentsPage.xaml
+    /// Логика взаимодействия для PaydayPage.xaml
     /// </summary>
-    public partial class ComponentsPage : Page
+    public partial class PaydayPage : Page
     {
         private readonly ApiService _apiService;
 
-        private List<Components> _allComponents;
-        public ComponentsPage()
+        private List<Payday> _allPayday;
+        public PaydayPage()
         {
-            InitializeComponent();
+            InitializeComponent(); 
             _apiService = new ApiService();
-            LoadComponents();
+            LoadPayday();
         }
-        private async Task LoadComponents()
+        private async Task LoadPayday()
         {
             try
             {
-                _allComponents = await _apiService.GetComponents();
-                ComponentsListView.ItemsSource = _allComponents;
+                _allPayday = await _apiService.GetPaydayCollection();
+                PaydayListView.ItemsSource = _allPayday;
             }
             catch (Exception ex)
             {
@@ -55,7 +53,7 @@ namespace KalashnikovGroupApp.Pages
 
         private void ComponentsClick(object sender, RoutedEventArgs e)
         {
-            
+            NavigationService.Navigate(new ComponentsPage());
         }
 
         private void DealClick(object sender, RoutedEventArgs e)
@@ -65,7 +63,7 @@ namespace KalashnikovGroupApp.Pages
 
         private void PaydayClick(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new PaydayPage());
+
         }
 
         private void ExcelClick(object sender, RoutedEventArgs e)
@@ -78,19 +76,23 @@ namespace KalashnikovGroupApp.Pages
 
             int indexRows = 1;
 
-            worksheet.Cells[2][indexRows] = "Наименование";
+            worksheet.Cells[2][indexRows] = "К выплате";
+            worksheet.Cells[3][indexRows] = "Дата начала";
+            worksheet.Cells[4][indexRows] = "Дата конца";
 
-            var printItems = ComponentsListView.Items;
+            var printItems = PaydayListView.Items;
 
-            foreach (Components item in printItems)
+            foreach (Payday item in printItems)
             {
                 worksheet.Cells[1][indexRows + 1] = indexRows;
-                worksheet.Cells[2][indexRows + 1] = item.denomination;
+                worksheet.Cells[2][indexRows + 1] = item.paycheck;
+                worksheet.Cells[3][indexRows + 1] = item.start_date;
+                worksheet.Cells[4][indexRows + 1] = item.end_date;
 
                 indexRows++;
             }
             Excel.Range range = worksheet.Range[worksheet.Cells[2][indexRows + 1],
-                    worksheet.Cells[2][indexRows + 1]];
+                    worksheet.Cells[4][indexRows + 1]];
 
             range.ColumnWidth = 20;
 
@@ -101,16 +103,16 @@ namespace KalashnikovGroupApp.Pages
 
         private async void PDFClick(object sender, RoutedEventArgs e)
         {
-            _allComponents = await _apiService.GetComponents();
-            var ComponentsInPDF = _allComponents;
+            _allPayday = await _apiService.GetPaydayCollection();
+            var PaydayInPDF = _allPayday;
 
-            var ComponentsApplicationPDF = new Word.Application();
+            var PaydayApplicationPDF = new Word.Application();
 
-            Word.Document document = ComponentsApplicationPDF.Documents.Add();
+            Word.Document document = PaydayApplicationPDF.Documents.Add();
 
             Word.Paragraph empParagraph = document.Paragraphs.Add();
             Word.Range empRange = empParagraph.Range;
-            empRange.Text = "Components";
+            empRange.Text = "Payday";
             empRange.Font.Bold = 4;
             empRange.Font.Italic = 4;
             empRange.Font.Color = Word.WdColor.wdColorBlack;
@@ -118,89 +120,97 @@ namespace KalashnikovGroupApp.Pages
 
             Word.Paragraph tableParagraph = document.Paragraphs.Add();
             Word.Range tableRange = tableParagraph.Range;
-            Word.Table paymentsTable = document.Tables.Add(tableRange, ComponentsInPDF.Count() + 1, 1);
+            Word.Table paymentsTable = document.Tables.Add(tableRange, PaydayInPDF.Count() + 1, 3);
             paymentsTable.Borders.InsideLineStyle = paymentsTable.Borders.OutsideLineStyle = Word.WdLineStyle.wdLineStyleSingle;
             paymentsTable.Range.Cells.VerticalAlignment = Word.WdCellVerticalAlignment.wdCellAlignVerticalCenter;
 
             Word.Range cellRange;
 
             cellRange = paymentsTable.Cell(1, 1).Range;
-            cellRange.Text = "Наименование";
+            cellRange.Text = "К выплате";
+            cellRange = paymentsTable.Cell(1, 2).Range;
+            cellRange.Text = "Дата начала";
+            cellRange = paymentsTable.Cell(1, 3).Range;
+            cellRange.Text = "Дата конца";
 
 
             paymentsTable.Rows[1].Range.Bold = 1;
             paymentsTable.Rows[1].Range.ParagraphFormat.Alignment = Word.WdParagraphAlignment.wdAlignParagraphCenter;
 
-            for (int i = 0; i < ComponentsInPDF.Count(); i++)
+            for (int i = 0; i < PaydayInPDF.Count(); i++)
             {
-                var ProductCurrent = ComponentsInPDF[i];
+                var ProductCurrent = PaydayInPDF[i];
 
                 cellRange = paymentsTable.Cell(i + 2, 1).Range;
-                cellRange.Text = ProductCurrent.denomination;
+                cellRange.Text = ProductCurrent.paycheck.ToString();
+
+                cellRange = paymentsTable.Cell(i + 2, 2).Range;
+                cellRange.Text = ProductCurrent.end_date.ToString();
+
+                cellRange = paymentsTable.Cell(i + 2, 3).Range;
+                cellRange.Text = ProductCurrent.start_date.ToString();
             }
 
-            ComponentsApplicationPDF.Visible = true;
+            PaydayApplicationPDF.Visible = true;
 
-            document.SaveAs2(@"C:\Users\User\OneDrive\Desktop\KalashnikovGroupApp\KalashnikovGroupApp\Files\Components.pdf", Word.WdExportFormat.wdExportFormatPDF);
+            document.SaveAs2(@"C:\Users\User\OneDrive\Desktop\KalashnikovGroupApp\KalashnikovGroupApp\Files\Payday.pdf", Word.WdExportFormat.wdExportFormatPDF);
         }
 
         private void AddClick(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new ComponentsPageAdd());
+            NavigationService.Navigate(new PaydayPageAdd());
         }
 
         private void UpdateClick(object sender, RoutedEventArgs e)
         {
-            if (ComponentsListView.SelectedItem is Components selectedComponents)
+            if (PaydayListView.SelectedItem is Payday selectedPayday)
             {
-                NavigationService.Navigate(new ComponentsPageAdd(selectedComponents));
+                NavigationService.Navigate(new PaydayPageAdd(selectedPayday));
             }
             else
             {
-                MessageBox.Show("Выберите компонент для редактирования");
+                MessageBox.Show("Выберите зарплату для редактирования");
             }
         }
 
         private async void DeleteClick(object sender, RoutedEventArgs e)
         {
-            if (ComponentsListView.SelectedItem is Components selectedComponents)
+            if (PaydayListView.SelectedItem is Payday selectedPayday)
             {
-                var result = MessageBox.Show($"Вы уверены, что хотите удалить компонент {selectedComponents.denomination}?", "Подтверждение удаления", MessageBoxButton.YesNo);
+                var result = MessageBox.Show($"Вы уверены, что хотите удалить зарплату с {selectedPayday.start_date}?", "Подтверждение удаления", MessageBoxButton.YesNo);
                 if (result == MessageBoxResult.Yes)
                 {
                     try
                     {
-                        await _apiService.DeleteСomponents(selectedComponents.id_components);
-                        MessageBox.Show("Компонент успешно удален.");
-                        await LoadComponents();
+                        await _apiService.DeletePayday(selectedPayday.id_payday);
+                        MessageBox.Show("Зарплата успешно удален.");
+                        await LoadPayday();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Ошибка при удалении компонент: {ex.Message}");
+                        MessageBox.Show($"Ошибка при удалении зарплаты: {ex.Message}");
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Выберите компонент для удаления.");
+                MessageBox.Show("Выберите зарплату для удаления.");
             }
-        }
-
-        private void SearchClick(object sender, RoutedEventArgs e)
-        {
-            var filteredComponents = _allComponents.AsEnumerable();
-
-            if (!string.IsNullOrWhiteSpace(TbSerch.Text))
-            {
-                var filterText = TbSerch.Text.ToLowerInvariant();
-                filteredComponents = filteredComponents.Where(p => p.denomination.ToLowerInvariant().Contains(filterText));
-            }
-            ComponentsListView.ItemsSource = filteredComponents.ToList();
         }
 
         private void TbSerch_TextChanged(object sender, TextChangedEventArgs e)
         {
 
+        }
+
+        private void SearchClick(object sender, RoutedEventArgs e)
+        {
+            var filteredPayday = _allPayday.AsEnumerable();
+            if (int.TryParse(TbSerch.Text, out var minQuality))
+            {
+                filteredPayday = filteredPayday.Where(p => p.paycheck >= minQuality);
+            }
+            PaydayListView.ItemsSource = filteredPayday.ToList();
         }
     }
 }

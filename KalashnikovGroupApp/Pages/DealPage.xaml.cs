@@ -63,7 +63,7 @@ namespace KalashnikovGroupApp.Pages
 
         private void PaydayClick(object sender, RoutedEventArgs e)
         {
-
+            NavigationService.Navigate(new PaydayPage());
         }
 
         private void ExcelClick(object sender, RoutedEventArgs e)

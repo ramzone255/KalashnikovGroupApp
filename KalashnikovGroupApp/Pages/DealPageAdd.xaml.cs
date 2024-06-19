@@ -50,18 +50,18 @@ namespace KalashnikovGroupApp.Pages
                 if (_deal.id_deal == 0)
                 {
                     await _apiService.CreateDeal(_deal);
-                    MessageBox.Show("Сотрудник успешно добавлен");
+                    MessageBox.Show("Дело успешно добавлен");
                 }
                 else
                 {
                     await _apiService.UpdateDeal(_deal);
-                    MessageBox.Show("Сотрудник успешно обновлен");
+                    MessageBox.Show("Дело успешно обновлен");
                 }
                 NavigationService.Navigate(new DealPage());
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сохранеии сотрудника: {ex.Message}");
+                MessageBox.Show($"Ошибка при сохранеии дела: {ex.Message}");
             }
         }
 

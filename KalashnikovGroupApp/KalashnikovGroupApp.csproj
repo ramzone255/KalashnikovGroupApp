@@ -100,6 +100,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Components.cs" />
     <Compile Include="Models\Deal.cs" />
+    <Compile Include="Models\Payday.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Pages\ComponentsPage.xaml.cs">
       <DependentUpon>ComponentsPage.xaml</DependentUpon>
@@ -118,6 +119,15 @@
     </Compile>
     <Compile Include="Pages\EmployeesPageAdd.xaml.cs">
       <DependentUpon>EmployeesPageAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PaydayPage.xaml.cs">
+      <DependentUpon>PaydayPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\PaydayPageAdd.xaml.cs">
+      <DependentUpon>PaydayPageAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Pages\SingInPage.xaml.cs">
+      <DependentUpon>SingInPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Servises\ApiService.cs" />
     <Page Include="MainWindow.xaml">
@@ -153,6 +163,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Pages\EmployeesPageAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PaydayPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\PaydayPageAdd.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Pages\SingInPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
