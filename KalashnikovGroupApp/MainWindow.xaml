@@ -15,7 +15,7 @@
             <RowDefinition Height="403"/>
         </Grid.RowDefinitions>
         <Border Grid.Row="1">
-            <Frame x:Name="MainFrame" Source=".\Pages\EmployeesPage.xaml" NavigationUIVisibility="Hidden" 
+            <Frame x:Name="MainFrame" Source=".\Pages\SingInPage.xaml" NavigationUIVisibility="Hidden" 
                VerticalAlignment="Top"/>
         </Border>
         <StackPanel Grid.Row="0" Background="Black">

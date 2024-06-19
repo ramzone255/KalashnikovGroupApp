@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KalashnikovGroupApp.Servises;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,34 @@ namespace KalashnikovGroupApp.Pages
     /// </summary>
     public partial class SingInPage : Page
     {
+        private readonly ApiService _apiService;
         public SingInPage()
         {
             InitializeComponent();
+            _apiService = new ApiService();
+        }
+
+        private async void SingInClick(object sender, RoutedEventArgs e)
+        {
+            var mail = TBoxMail.Text;
+            var password = TBoxPassword.Text;
+
+            try
+            {
+                var employees = await _apiService.AuthenticateAsync(mail, password);
+                if (employees != null)
+                {
+                    NavigationService.Navigate(new EmployeesPage());
+                }
+                else
+                {
+                    MessageBox.Show("Invalid login or password");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}");
+            }
         }
     }
 }

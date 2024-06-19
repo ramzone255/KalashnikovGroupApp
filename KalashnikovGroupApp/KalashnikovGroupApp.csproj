@@ -100,6 +100,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\Components.cs" />
     <Compile Include="Models\Deal.cs" />
+    <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Payday.cs" />
     <Compile Include="Models\Post.cs" />
     <Compile Include="Pages\ComponentsPage.xaml.cs">
@@ -246,6 +247,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Files\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\singin.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\kalashnikov.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

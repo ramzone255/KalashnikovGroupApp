@@ -9,6 +9,30 @@
       Title="SingInPage">
 
     <Grid>
-        
+        <StackPanel Background="White">
+            <StackPanel Width="400" Margin="0,50,0,0">
+                <Label FontSize="20" Width="175" HorizontalAlignment="Left"
+FontStyle="Italic"
+FontWeight="Heavy"
+Foreground="#533840">Mail:</Label>
+                <TextBox Height="30" Width="200" Margin="150,-35,0,0" Name="TBoxMail"/>
+            </StackPanel>
+            <StackPanel Width="400" Margin="0,0,0,0">
+                <Label FontSize="20" Width="175" HorizontalAlignment="Left"
+FontStyle="Italic"
+FontWeight="Heavy"
+Foreground="#533840">Password:</Label>
+                <TextBox Height="30" Width="200" Margin="150,-35,0,0" Name="TBoxPassword"/>
+            </StackPanel>
+            <Button Height="50" Width="50" Background="Transparent" Margin="0,20,0,0" Click="SingInClick">
+                <Image Source="/Images/singin.png"/>
+                <Button.ToolTip>
+                    <ToolTip Height="30" Style="{StaticResource RoundToolsTemplate}">
+                        ㅤㅤСохранитьㅤ
+                    </ToolTip>
+                </Button.ToolTip>
+            </Button>
+            <Image Source="/Images/kalashnikov.png" Height="230" Width="300" Margin="0,0,0,0"/>
+        </StackPanel>
     </Grid>
 </Page>

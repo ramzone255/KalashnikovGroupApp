@@ -108,6 +108,16 @@ namespace KalashnikovGroupApp.Servises
             var response = await _httpClient.DeleteAsync($"api/Deal/DELETE/{id_deal}");
             response.EnsureSuccessStatusCode();
         }
+        internal async Task<Employees> AuthenticateAsync(string mail, string password)
+        {
+            var login = new Login { mail = mail, password = password };
+            var response = await _httpClient.PostAsJsonAsync("api/Employees/SingIn", login);
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadFromJsonAsync<Employees>();
+            }
+            return null;
+        }
 
         // Другие методы для взаимодействия с API
     }
