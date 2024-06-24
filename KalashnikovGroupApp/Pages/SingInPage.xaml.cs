@@ -42,7 +42,7 @@ namespace KalashnikovGroupApp.Pages
                 }
                 else
                 {
-                    MessageBox.Show("Invalid login or password");
+                    MessageBox.Show("Invalid mail or password");
                 }
             }
             catch (Exception ex)
